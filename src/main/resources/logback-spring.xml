@@ -1,0 +1,68 @@
+<configuration>
+    <conversionRule conversionWord="clr"
+                    converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+    <conversionRule conversionWord="wex"
+                    converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="wEx"
+                    converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
+
+    <springProfile name="local">
+        <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <pattern>%highlight(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %yellow(%C): %msg %replace({%mdc}){'\{\}', ''}%n%throwable</pattern>
+            </encoder>
+        </appender>
+
+        <!-- LOG everything at INFO level -->
+        <root level="info">
+            <appender-ref ref="Console"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="!local">
+        <appender name="JsonConsole"
+                  class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+                <providers>
+                    <timestamp>
+                        <timeZone>UTC</timeZone>
+                    </timestamp>
+                    <version/>
+                    <logLevel/>
+                    <message/>
+                    <loggerName/>
+                    <threadName/>
+                    <context/>
+                    <pattern>
+                        <omitEmptyFields>true</omitEmptyFields>
+                        <pattern>
+                            {
+                            "trace": {
+                            "trace_id": "%mdc{X-B3-TraceId}",
+                            "span_id": "%mdc{X-B3-SpanId}",
+                            "parent_span_id": "%mdc{X-B3-ParentSpanId}",
+                            "exportable": "%mdc{X-Span-Export}"
+                            }
+                            }
+                        </pattern>
+                    </pattern>
+                    <mdc>
+                        <excludeMdcKeyName>traceId</excludeMdcKeyName>
+                        <excludeMdcKeyName>spanId</excludeMdcKeyName>
+                        <excludeMdcKeyName>parentId</excludeMdcKeyName>
+                        <excludeMdcKeyName>spanExportable</excludeMdcKeyName>
+                        <excludeMdcKeyName>X-B3-TraceId</excludeMdcKeyName>
+                        <excludeMdcKeyName>X-B3-SpanId</excludeMdcKeyName>
+                        <excludeMdcKeyName>X-B3-ParentSpanId</excludeMdcKeyName>
+                        <excludeMdcKeyName>X-Span-Export</excludeMdcKeyName>
+                    </mdc>
+                    <stackTrace/>
+                </providers>
+            </encoder>
+        </appender>
+
+        <root level="info">
+            <appender-ref ref="JsonConsole" />
+        </root>
+    </springProfile>
+</configuration>

@@ -1,3 +1,22 @@
 spring:
   application:
     name: wallet-api
+  profiles:
+    active:
+      - ${PROFILE:local}
+  datasource:
+    url: jdbc:postgresql://localhost:5432/walletdb
+    username: postgres
+    password: postgres
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+
+version:
+  api: @project.version@
+
+server:
+  port: ${PORT:8080}
