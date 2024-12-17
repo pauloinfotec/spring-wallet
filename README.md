@@ -310,3 +310,4 @@ http://localhost:8080/swagger-ui/index.html
 ## Features Not Implemented
 1. Retrieve the balance of a user's wallet at a specific point in the past
 2. Transfer money between user wallets
+3. Security (can be implemented using Spring Security with JWT)
