@@ -105,6 +105,57 @@ public class WalletServiceTest {
         var exception = assertThrows(BusinessException.class, () -> service.withdraw("testuser", BigDecimal.valueOf(50.0)));
         assertEquals("Insufficient balance", exception.getMessage());
     }
+    
+    @Test
+    void testGetBalanceSuccessful() {
+    	User user = new User("testuser");
+    	when(userRepository.findByUsername(any())).thenReturn(Optional.of(user));
+
+        assertEquals(BigDecimal.valueOf(0), user.getBalance());
+    }
+    
+    @Test
+    void testGetBalanceUserNotFound() {
+        when(userRepository.findByUsername(any())).thenReturn(Optional.empty());
+        
+        var exception  = assertThrows(BusinessException.class, () -> service.getBalance("testuser"));
+        assertEquals("User not found", exception.getMessage());
+    }
+    
+    @Test
+    void testCreateWalletUsernameNull() {
+    	User user = new User(null);
+    	
+        var exception  = assertThrows(BusinessException.class, () -> service.create(user));
+        assertEquals("Username cannot be null", exception.getMessage());
+    }
+    
+    @Test
+    void testCreateWalletSameUser() {
+    	User user = new User("testuser");
+    	when(userRepository.findByUsername(any())).thenReturn(Optional.of(user));
+        
+        var exception  = assertThrows(BusinessException.class, () -> service.create(user));
+        assertEquals("Username already exists", exception.getMessage());
+    }
+    
+    @Test
+    void testCreateWalletUserSuccessful() {
+    	User user = new User("testuser");
+        when(userRepository.findByUsername(any())).thenReturn(Optional.empty());
+        service.create(user);
+        
+        verify(userRepository, times(1)).save(user);
+    }
+    
+    @Test
+    void testGetTransactionsUserNotFound() {
+        when(userRepository.findByUsername(any())).thenReturn(Optional.empty());
+        
+        var exception  = assertThrows(BusinessException.class, () -> service.getTransactions("testuser"));
+        assertEquals("User not found", exception.getMessage());
+        
+    }
 
     @Test
     void testGetTransactions() {

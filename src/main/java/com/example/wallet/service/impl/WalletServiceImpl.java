@@ -64,14 +64,14 @@ public class WalletServiceImpl implements WalletService {
     }
     
     @Override
-    public void create(String username) {
-    	String newUsername = Optional.ofNullable(username)
+    public void create(User user) {
+    	Optional.ofNullable(user.getUsername())
     			.orElseThrow(() -> new BusinessException("Username cannot be null"));
     	
-    	userRepository.findByUsername(newUsername)
+    	userRepository.findByUsername(user.getUsername())
     			.ifPresent(s -> { throw new BusinessException("Username already exists"); });
     	
-    	userRepository.save(new User(newUsername));
+    	userRepository.save(user);
     }
     
     @Override

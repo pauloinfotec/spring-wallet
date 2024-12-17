@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.example.wallet.dto.BalanceDto;
 import com.example.wallet.dto.TransactionDto;
+import com.example.wallet.entity.User;
 
 public interface WalletService {
 
@@ -14,7 +15,7 @@ public interface WalletService {
 	
 	List<TransactionDto> getTransactions(String username);
 	
-	void create(String username);
+	void create(User user);
 	
 	BalanceDto getBalance(String username);
 }

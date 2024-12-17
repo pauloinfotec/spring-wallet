@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.wallet.entity.User;
 import com.example.wallet.exception.BusinessException;
 import com.example.wallet.service.WalletService;
 
@@ -30,7 +31,7 @@ public class WalletController {
     @Operation(description = "Allow the creation of wallets for users")
     public ResponseEntity<String> create(@RequestParam(name = "username", required = true) String username) {
         try {
-        	walletService.create(username);
+        	walletService.create(new User(username));
         	return ResponseEntity.ok("Create successful");
 		} catch (BusinessException ex) {
 			return ResponseEntity.unprocessableEntity().body(ex.getMessage());
