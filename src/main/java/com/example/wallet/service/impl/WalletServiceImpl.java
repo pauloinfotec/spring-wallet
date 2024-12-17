@@ -32,9 +32,10 @@ public class WalletServiceImpl implements WalletService {
     @Transactional
     @Override
     public void deposit(String username, BigDecimal amount) {
-        if (amount.compareTo(BigDecimal.ZERO) == 0) throw new BusinessException("Amount must be greater than zero");
-        User user = userRepository.findByUsername(username)
-            .orElseThrow(() -> new BusinessException("User not found"));
+        if (amount.compareTo(BigDecimal.ZERO) <= 0) throw new BusinessException("Amount must be greater than zero");
+        
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new BusinessException("User not found"));
+        
         user.setBalance(user.getBalance().add(amount));
         userRepository.save(user);
         transactionRepository.save(new Transaction(user, amount, TransactionType.DEPOSIT));
@@ -43,11 +44,13 @@ public class WalletServiceImpl implements WalletService {
     @Transactional
     @Override
     public void withdraw(String username, BigDecimal amount) {
-    	if (amount.compareTo(BigDecimal.ZERO) == 0) throw new BusinessException("Amount must be greater than zero");
-        User user = userRepository.findByUsername(username)
-            .orElseThrow(() -> new BusinessException("User not found"));
-        if (user.getBalance().compareTo(amount) < 0) throw new BusinessException("Insufficient balance");
-        user.setBalance(user.getBalance().subtract(amount));
+    	if (amount.compareTo(BigDecimal.ZERO) <= 0) throw new BusinessException("Amount must be greater than zero");
+        
+    	User user = userRepository.findByUsername(username).orElseThrow(() -> new BusinessException("User not found"));
+        
+    	if (user.getBalance().compareTo(amount) < 0) throw new BusinessException("Insufficient balance");
+        
+    	user.setBalance(user.getBalance().subtract(amount));
         userRepository.save(user);
         transactionRepository.save(new Transaction(user, amount, TransactionType.WITHDRAW));
     }
@@ -56,6 +59,7 @@ public class WalletServiceImpl implements WalletService {
     public List<TransactionDto> getTransactions(String username) {
         User user = userRepository.findByUsername(username)
             .orElseThrow(() -> new BusinessException("User not found"));
+        
         return transactionRepository.findByUser(user).stream().map(TransactionDto::new).toList();
     }
     
@@ -63,8 +67,10 @@ public class WalletServiceImpl implements WalletService {
     public void create(String username) {
     	String newUsername = Optional.ofNullable(username)
     			.orElseThrow(() -> new BusinessException("Username cannot be null"));
+    	
     	userRepository.findByUsername(newUsername)
     			.ifPresent(s -> { throw new BusinessException("Username already exists"); });
+    	
     	userRepository.save(new User(newUsername));
     }
     
@@ -72,6 +78,7 @@ public class WalletServiceImpl implements WalletService {
     public BalanceDto getBalance(String username) {
         User user = userRepository.findByUsername(username)
             .orElseThrow(() -> new BusinessException("User not found"));
+        
         return new BalanceDto(user.getBalance());
     }
 }
