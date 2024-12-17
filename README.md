@@ -3,9 +3,15 @@ A simple wallet microservice running on the JVM that manages users' money.
 This service will support operations for creating, depositing, withdrawing and list transactions of a specific user.
 
 ## Description
-A Rest API to access wallet accounts with the current balance of a user. The balance can be modified by registering transactions on the account, either debit transactions (removing funds) or credit transactions (adding funds).
+A simple Rest API to access wallet accounts with the current balance of a user. The balance can be modified by registering transactions on the account, either debit transactions (removing funds) or credit transactions (adding funds).
 A debit transaction will only succeed if there are sufficient funds on the wallet.
 It is also possible to fetch the users wallets and get current balance.
+
+## Implementation
+Due to the short implementation time of this application (about 6h for implementation and 2h for documentation) a simple GenAI prompt in Chatgpt was used to drive development:
+```
+Implement a wallet microservice using spring boot, java 17 and postgres with controllers to make deposit, withdraw, list transaction for each user and to guarantee that all transaction will be atomics. Write also unit tests for each funcionality.
+```
 
 ## API requirements and running instructions
 1. Java 17
