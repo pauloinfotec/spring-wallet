@@ -55,6 +55,7 @@ public class WalletServiceImpl implements WalletService {
         transactionRepository.save(new Transaction(user, amount, TransactionType.WITHDRAW));
     }
 
+    @Transactional
     @Override
     public List<TransactionDto> getTransactions(String username) {
         User user = userRepository.findByUsername(username)
@@ -63,6 +64,7 @@ public class WalletServiceImpl implements WalletService {
         return transactionRepository.findByUser(user).stream().map(TransactionDto::new).toList();
     }
     
+    @Transactional
     @Override
     public void create(User user) {
     	Optional.ofNullable(user.getUsername())
@@ -74,6 +76,7 @@ public class WalletServiceImpl implements WalletService {
     	userRepository.save(user);
     }
     
+    @Transactional
     @Override
     public BalanceDto getBalance(String username) {
         User user = userRepository.findByUsername(username)
