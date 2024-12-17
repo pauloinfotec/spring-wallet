@@ -282,7 +282,7 @@ You can also access API Documentation with this URL:
 http://localhost:8080/swagger-ui/index.html
 ```
 
-## Tecnologies
+## Technologies
 - PostgreSQL database, which has good concurrency support, also has ACID compliance
 - Spring Boot, including Spring Data JPA for JPA based repositories
 - Logback with SLf4j for logging
