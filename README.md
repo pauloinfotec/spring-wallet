@@ -20,7 +20,7 @@ Write also unit tests for each funcionality.
 2. Maven 3 to build the application
 3. Download and install PostgreSQL server (version 9.6 or higher). It is available here: https://www.postgresql.org/download/
 4. Connect to the Postgres server and create database walletdb.
-5. You will need to run some scripts so that it be able to test application:
+5. You will need to run some scripts on database using psql CLI so that you be able to test application:
    ```
    CREATE TABLE public.user
    (
