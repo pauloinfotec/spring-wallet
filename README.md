@@ -17,8 +17,8 @@ Write also unit tests for each funcionality.
 
 ## API requirements and running instructions
 1. Java 17
-2. Maven 3 to build the application
-3. Download and install PostgreSQL server (version 9.6 or higher). It is available here: https://www.postgresql.org/download/
+2. Maven 3 to build the application. Its is available here: https://maven.apache.org/download.cgi
+3. Download and install PostgreSQL server (tested on version 9.6). It is available here: https://www.postgresql.org/download/
 4. Connect to the Postgres server and create database walletdb.
 5. You will need to run some scripts on database using psql CLI so that you be able to test application:
    ```
@@ -301,7 +301,7 @@ http://localhost:8080/swagger-ui/index.html
   ```
   gcloud run deploy --source .
   ```
-- This project also has a *Dockerfile* if you want to build an image and deploy to a Kubernetes cluster.
+- This project also has a *Dockerfile* if you want to build an image and deploy to a Kubernetes cluster. You need to run *mvn package* to generate the target jar file before the docker build command.
 
 ## Application aspects
 1. Transactions on service and repository level ensure atomicity
